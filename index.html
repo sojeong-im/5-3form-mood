@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>무드해방일지 | 소모임 신청</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+</head>
+<body>
+    <div id="app-container" class="achromatic-mode">
+        <!-- 배경 애니메이션 요소 -->
+        <div class="color-blob blob-1"></div>
+        <div class="color-blob blob-2"></div>
+        <div class="color-blob blob-3"></div>
+
+        <!-- 시작 화면 -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <h1>무드해방일지</h1>
+                <p class="subtitle">남들의 시선에서 벗어나, 온전한 내 취향을 입는 시간</p>
+                <button id="start-btn" class="primary-btn">신청하기</button>
+            </div>
+        </div>
+
+        <!-- 폼 화면 -->
+        <div id="form-screen" class="screen">
+            <div class="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+            
+            <div class="question-container">
+                <!-- 질문들이 JS로 여기에 렌더링됩니다 -->
+            </div>
+            
+            <div class="navigation-buttons">
+                <button id="prev-btn" class="nav-btn secondary" style="display: none;">이전</button>
+                <button id="next-btn" class="nav-btn primary">다음</button>
+            </div>
+        </div>
+        
+        <!-- 완료 화면 -->
+        <div id="complete-screen" class="screen">
+            <div class="complete-content">
+                <h2>신청이 완료되었습니다!</h2>
+                <p>나만의 컬러를 찾는 여정에 합류하신 것을 환영합니다.<br>곧 연락드리겠습니다.</p>
+                <div class="color-palette-showcase">
+                    <!-- 컬러 팔레트 장식 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+:root {
+    --text-color: #ffffff;
+    --bg-color: #111111;
+    --primary-color: #ffffff;
+    --primary-text: #000000;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    
+    /* 컬러 모드 변수들 */
+    --blob-1: #111111;
+    --blob-2: #111111;
+    --blob-3: #111111;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #111111;
+    color: var(--text-color);
+}
+
+#app-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 1.5s ease;
+}
+
+/* 배경 애니메이션 (무채색 -> 컬러풀) */
+.color-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    z-index: 0;
+    transition: background 2s ease, transform 10s ease-in-out infinite alternate;
+}
+
+.blob-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--blob-1);
+    top: -100px;
+    left: -100px;
+    animation: float1 15s ease-in-out infinite alternate;
+}
+
+.blob-2 {
+    width: 600px;
+    height: 600px;
+    background: var(--blob-2);
+    bottom: -150px;
+    right: -100px;
+    animation: float2 18s ease-in-out infinite alternate;
+}
+
+.blob-3 {
+    width: 400px;
+    height: 400px;
+    background: var(--blob-3);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float3 20s ease-in-out infinite alternate;
+}
+
+/* 컬러 모드 활성화 시 */
+.color-mode {
+    --blob-1: #ff3366; /* 핑크/레드 계열 */
+    --blob-2: #33ccff; /* 시원한 블루 */
+    --blob-3: #ffcc00; /* 노란색 포인트 */
+    --bg-color: #1a1a2e; /* 어두운 네이비 배경 */
+}
+
+@keyframes float1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(100px, 100px) scale(1.1); } }
+@keyframes float2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-100px, -50px) scale(1.2); } }
+@keyframes float3 { 0% { transform: translate(-50%, -50%) scale(1); } 100% { transform: translate(-30%, -70%) scale(0.9); } }
+
+/* 화면 전환 공통 */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateY(20px);
+    padding: 20px;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* 시작 화면 */
+.welcome-content {
+    text-align: center;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+/* 버튼 스타일 */
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 16px 40px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.primary-btn, .nav-btn.primary {
+    background-color: var(--primary-color);
+    color: var(--primary-text);
+}
+
+.primary-btn:hover, .nav-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+}
+
+.nav-btn.secondary {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.nav-btn.secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 폼 화면 */
+#form-screen {
+    justify-content: center;
+    align-items: stretch;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.progress-bar-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff3366, #ffcc00);
+    transition: width 0.4s ease;
+}
+
+.question-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 40px 0;
+}
+
+.question-block {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.question-block.active {
+    display: block;
+}
+
+.question-label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+/* 입력 폼 스타일 */
+input[type="text"], input[type="tel"] {
+    width: 100%;
+    background: var(--input-bg);
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 1.5rem;
+    padding: 15px 0;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="tel"]:focus {
+    border-bottom-color: var(--primary-color);
+}
+
+/* 객관식 옵션 스타일 */
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-card {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.option-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.option-card.selected {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-bottom: 40px;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 완료 화면 */
+.complete-content {
+    text-align: center;
+}
+
+.complete-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.complete-content p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 600px) {
+    h1 { font-size: 2.5rem; }
+    .question-label { font-size: 1.2rem; }
+    input[type="text"] { font-size: 1.2rem; }
+    #form-screen { padding: 20px; }
+    .navigation-buttons { padding-bottom: 20px; }
+}
