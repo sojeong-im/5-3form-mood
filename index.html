@@ -4,49 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>무드해방일지 | 소모임 신청</title>
+    <!-- 폰트: 나눔손글씨 펜 (감성적인 느낌) & 본고딕 -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 </head>
 <body>
-    <div id="app-container" class="achromatic-mode">
-        <!-- 배경 애니메이션 요소 -->
-        <div class="color-blob blob-1"></div>
-        <div class="color-blob blob-2"></div>
-        <div class="color-blob blob-3"></div>
+    <div id="app-container" class="monochrome-mode">
+        <!-- 배경 꾸미기 요소 (팔레트 스와치, 폴라로이드 등) -->
+        <div class="decor tape top-left"></div>
+        <div class="decor tape top-right"></div>
+        
+        <!-- 팔레트 스와치들 (시작 전엔 무채색, 폼 시작하면 컬러로 변경됨) -->
+        <div class="swatch-container">
+            <div class="swatch c1"></div>
+            <div class="swatch c2"></div>
+            <div class="swatch c3"></div>
+            <div class="swatch c4"></div>
+            <div class="swatch c5"></div>
+        </div>
 
-        <!-- 시작 화면 -->
+        <!-- 시작 화면 (다이어리 표지 느낌) -->
         <div id="welcome-screen" class="screen active">
-            <div class="welcome-content">
-                <h1>무드해방일지</h1>
-                <p class="subtitle">남들의 시선에서 벗어나, 온전한 내 취향을 입는 시간</p>
-                <button id="start-btn" class="primary-btn">신청하기</button>
+            <div class="scrapbook-card cover-card">
+                <div class="card-tape"></div>
+                <h1 class="handwriting title">무드해방일지</h1>
+                <p class="subtitle">무채색에서 벗어나, 나만의 색을 찾는<br>패션·뷰티 소모임 🤍</p>
+                
+                <div class="icon-row">
+                    <span>👗 스타일링</span>
+                    <span>💄 뷰티 컬러</span>
+                    <span>📸 팝업 투어</span>
+                </div>
+
+                <p class="handwriting quote">"어제보다 더 나다운 색을,<br>우리 같이 찾아요"</p>
+
+                <button id="start-btn" class="handwriting-btn">신청서 쓰러가기 ✍️</button>
             </div>
         </div>
 
-        <!-- 폼 화면 -->
+        <!-- 폼 화면 (다이어리 속지/메모장 느낌) -->
         <div id="form-screen" class="screen">
-            <div class="progress-bar-container">
-                <div id="progress-bar"></div>
-            </div>
+            <div class="progress-text handwriting"><span id="current-step">1</span> / 6</div>
             
             <div class="question-container">
-                <!-- 질문들이 JS로 여기에 렌더링됩니다 -->
+                <!-- JS에서 렌더링 -->
             </div>
             
             <div class="navigation-buttons">
-                <button id="prev-btn" class="nav-btn secondary" style="display: none;">이전</button>
-                <button id="next-btn" class="nav-btn primary">다음</button>
+                <button id="prev-btn" class="nav-btn secondary handwriting" style="display: none;">이전 장</button>
+                <button id="next-btn" class="nav-btn primary handwriting">다음 장</button>
             </div>
         </div>
         
         <!-- 완료 화면 -->
         <div id="complete-screen" class="screen">
-            <div class="complete-content">
-                <h2>신청이 완료되었습니다!</h2>
-                <p>나만의 컬러를 찾는 여정에 합류하신 것을 환영합니다.<br>곧 연락드리겠습니다.</p>
-                <div class="color-palette-showcase">
-                    <!-- 컬러 팔레트 장식 -->
-                </div>
+            <div class="scrapbook-card">
+                <div class="card-tape"></div>
+                <h2 class="handwriting title" style="font-size: 3rem;">제출 완료! 🎉</h2>
+                <p style="margin-top: 20px; line-height: 1.6;">다양한 색깔로 채워질 당신의 일상을 응원합니다.<br>조만간 연락드릴게요!</p>
+                <div class="smile-sticker">:)</div>
             </div>
         </div>
     </div>

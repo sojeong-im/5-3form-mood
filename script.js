@@ -3,19 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'q1',
             type: 'text',
-            label: '1. 반가워요! 이름(또는 닉네임)을 알려주세요.',
+            label: '반가워요! 📝\n이름(또는 닉네임)을 알려주세요.',
             placeholder: '예: 김해방'
         },
         {
             id: 'q2',
             type: 'text',
-            label: '2. 연락처를 남겨주세요. (일정 안내용)',
+            label: '연락드릴 수 있는 번호를 남겨주세요 📱',
             placeholder: '예: 010-1234-5678'
         },
         {
             id: 'q3',
             type: 'choice',
-            label: '3. 현재 당신의 옷장 상태는 어떤가요?',
+            label: '현재 당신의 옷장 상태는 어떤가요? 👗',
             options: [
                 '🖤 99% 무채색 (블랙, 화이트, 그레이 인간)',
                 '🤔 컬러가 있긴 한데, 막상 입으려면 손이 안 가요',
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'q4',
             type: 'choice',
-            label: '4. 가장 도전해보고 싶은 패션 스타일이나 컬러는?',
+            label: '가장 도전해보고 싶은 패션이나 컬러는? 🎨',
             options: [
                 '비비드하고 쨍한 원색 컬러',
                 '부드럽고 은은한 파스텔 톤',
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'q5',
             type: 'choice',
-            label: '5. [무드해방일지]에서 가장 기대하는 활동은 무엇인가요?',
+            label: '[무드해방일지]에서 가장 기대하는 활동은? ✨',
             options: [
                 '컬러 해방템 및 데일리룩 꿀템 공유',
                 '나만의 스타일을 기록하고 이야기 나누기',
@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'q6',
             type: 'text',
-            label: '6. 마지막으로 남기고 싶은 말이 있다면 자유롭게 적어주세요. (선택)',
-            placeholder: '기대평이나 궁금한 점 등'
+            label: '마지막으로 남기고 싶은 말이 있다면 적어주세요 :)',
+            placeholder: '기대평이나 궁금한 점 등 자유롭게!'
         }
     ];
 
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formScreen = document.getElementById('form-screen');
     const completeScreen = document.getElementById('complete-screen');
     const questionContainer = document.querySelector('.question-container');
-    const progressBar = document.getElementById('progress-bar');
+    const currentStepText = document.getElementById('current-step');
     
     const startBtn = document.getElementById('start-btn');
     const prevBtn = document.getElementById('prev-btn');
@@ -66,86 +66,78 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentQuestionIndex = 0;
     const answers = {};
 
-    // 1. 폼 시작
+    // 1. 초기 렌더링 (모든 질문 카드를 미리 만들어둠)
+    function initQuestions() {
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = `question-card scrapbook-card ${index === 0 ? 'active' : ''}`;
+            card.dataset.index = index;
+            
+            // 상단 테이프
+            const tape = document.createElement('div');
+            tape.className = 'card-tape';
+            card.appendChild(tape);
+
+            const label = document.createElement('div');
+            label.className = 'q-label handwriting';
+            label.innerText = q.label;
+            card.appendChild(label);
+
+            if (q.type === 'text') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = q.placeholder;
+                input.id = `input-${q.id}`;
+                
+                input.addEventListener('keypress', (e) => {
+                    if(e.key === 'Enter') handleNext();
+                });
+                
+                card.appendChild(input);
+            } else if (q.type === 'choice') {
+                const list = document.createElement('div');
+                list.className = 'choice-list';
+                
+                q.options.forEach((opt) => {
+                    const item = document.createElement('div');
+                    item.className = 'choice-item';
+                    item.innerText = opt;
+                    
+                    item.addEventListener('click', () => {
+                        // 다른 선택 해제
+                        const siblings = list.querySelectorAll('.choice-item');
+                        siblings.forEach(s => s.classList.remove('selected'));
+                        item.classList.add('selected');
+                        answers[q.id] = opt;
+                        
+                        setTimeout(() => handleNext(), 300);
+                    });
+                    
+                    list.appendChild(item);
+                });
+                card.appendChild(list);
+            }
+
+            questionContainer.appendChild(card);
+        });
+    }
+
+    initQuestions();
+
+    // 2. 폼 시작
     startBtn.addEventListener('click', () => {
-        appContainer.classList.add('color-mode'); // 무채색에서 컬러풀하게 전환
+        appContainer.classList.remove('monochrome-mode');
+        appContainer.classList.add('color-mode'); 
+        
         welcomeScreen.classList.remove('active');
         
         setTimeout(() => {
             formScreen.classList.add('active');
-            renderQuestion(currentQuestionIndex);
-            updateProgressBar();
-        }, 500); // 부드러운 전환을 위해 약간의 딜레이
+            updateUI();
+        }, 500); 
     });
 
-    // 2. 질문 렌더링
-    function renderQuestion(index) {
-        questionContainer.innerHTML = '';
-        const q = questions[index];
-
-        const block = document.createElement('div');
-        block.className = 'question-block active';
-        
-        const label = document.createElement('div');
-        label.className = 'question-label';
-        label.innerText = q.label;
-        block.appendChild(label);
-
-        if (q.type === 'text') {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.placeholder = q.placeholder;
-            input.id = `input-${q.id}`;
-            if (answers[q.id]) {
-                input.value = answers[q.id];
-            }
-            
-            // 엔터키 입력 시 다음으로 이동
-            input.addEventListener('keypress', (e) => {
-                if(e.key === 'Enter') handleNext();
-            });
-            
-            block.appendChild(input);
-            
-            // 렌더링 후 포커스
-            setTimeout(() => input.focus(), 100);
-            
-        } else if (q.type === 'choice') {
-            const grid = document.createElement('div');
-            grid.className = 'options-grid';
-            
-            q.options.forEach((opt, i) => {
-                const card = document.createElement('div');
-                card.className = 'option-card';
-                card.innerText = opt;
-                
-                if (answers[q.id] === opt) {
-                    card.classList.add('selected');
-                }
-                
-                card.addEventListener('click', () => {
-                    // 단일 선택 로직
-                    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    answers[q.id] = opt;
-                    
-                    // 선택 시 자동으로 다음으로 넘어가는 효과 (UX)
-                    setTimeout(() => handleNext(), 400);
-                });
-                
-                grid.appendChild(card);
-            });
-            block.appendChild(grid);
-        }
-
-        questionContainer.appendChild(block);
-        
-        // 버튼 상태 업데이트
-        prevBtn.style.display = index === 0 ? 'none' : 'block';
-        nextBtn.innerText = index === questions.length - 1 ? '제출하기' : '다음';
-    }
-
-    // 3. 네비게이션 처리
+    // 3. 네비게이션 및 카드 전환 로직
     function saveCurrentAnswer() {
         const q = questions[currentQuestionIndex];
         if (q.type === 'text') {
@@ -156,13 +148,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function updateUI() {
+        // 카드 상태 업데이트 (슬라이드 애니메이션)
+        const cards = document.querySelectorAll('.question-card');
+        cards.forEach((card, idx) => {
+            card.classList.remove('active', 'prev');
+            if (idx === currentQuestionIndex) {
+                card.classList.add('active');
+                
+                // 텍스트 인풋이면 포커스
+                const input = card.querySelector('input');
+                if (input) setTimeout(() => input.focus(), 300);
+                
+            } else if (idx < currentQuestionIndex) {
+                card.classList.add('prev');
+            }
+        });
+
+        // 텍스트 업데이트
+        currentStepText.innerText = currentQuestionIndex + 1;
+        
+        // 버튼 상태
+        prevBtn.style.display = currentQuestionIndex === 0 ? 'none' : 'block';
+        nextBtn.innerText = currentQuestionIndex === questions.length - 1 ? '제출할게요! ✉️' : '다음 장';
+    }
+
     function handleNext() {
         saveCurrentAnswer();
         
         if (currentQuestionIndex < questions.length - 1) {
             currentQuestionIndex++;
-            renderQuestion(currentQuestionIndex);
-            updateProgressBar();
+            updateUI();
         } else {
             submitForm();
         }
@@ -172,23 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
         saveCurrentAnswer();
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
-            renderQuestion(currentQuestionIndex);
-            updateProgressBar();
+            updateUI();
         }
     }
 
-    function updateProgressBar() {
-        const progress = ((currentQuestionIndex) / questions.length) * 100;
-        progressBar.style.width = `${progress}%`;
-    }
-
     function submitForm() {
-        // 실제 폼 전송 로직 (현재는 프론트엔드 모의 처리)
         console.log('제출된 데이터:', answers);
-        
-        progressBar.style.width = '100%';
         formScreen.classList.remove('active');
-        
         setTimeout(() => {
             completeScreen.classList.add('active');
         }, 500);
