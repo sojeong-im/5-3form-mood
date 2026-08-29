@@ -46,6 +46,9 @@ body, html {
     height: 100%;
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 스와치 애니메이션 */
@@ -127,6 +130,7 @@ body, html {
     max-width: 90%;
     width: 500px;
     text-align: center;
+    margin: 0 auto;
 }
 
 .card-tape {
@@ -148,6 +152,7 @@ body, html {
     margin-bottom: 10px;
     position: relative;
     display: inline-block;
+    word-break: keep-all;
 }
 
 /* 제목 밑줄 효과 */
@@ -158,7 +163,7 @@ body, html {
     left: -5%;
     width: 110%;
     height: 12px;
-    background-color: rgba(179, 156, 208, 0.4); /* 연보라색 형광펜 느낌 */
+    background-color: rgba(179, 156, 208, 0.4);
     z-index: -1;
     transform: rotate(-1deg);
 }
@@ -168,11 +173,13 @@ body, html {
     color: var(--text-light);
     margin-bottom: 30px;
     line-height: 1.5;
+    word-break: keep-all;
 }
 
 .icon-row {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 30px;
     font-size: 0.9rem;
@@ -184,6 +191,7 @@ body, html {
     color: #444;
     line-height: 1.4;
     margin-bottom: 40px;
+    word-break: keep-all;
 }
 
 /* 버튼들 */
@@ -204,6 +212,7 @@ button {
     transition: all 0.3s ease;
     transform: rotate(-2deg);
     box-shadow: 3px 5px 10px rgba(0,0,0,0.2);
+    white-space: nowrap;
 }
 
 .handwriting-btn:hover {
@@ -213,6 +222,7 @@ button {
 
 /* 폼 화면 전용 */
 #form-screen {
+    width: 100%;
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -221,15 +231,18 @@ button {
 .progress-text {
     font-size: 2rem;
     color: var(--text-light);
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: right;
     width: 100%;
+    padding-right: 5%;
 }
 
 .question-container {
     width: 100%;
     position: relative;
-    min-height: 400px;
+    min-height: 420px;
+    display: flex;
+    justify-content: center;
 }
 
 .question-card {
@@ -239,12 +252,13 @@ button {
     box-shadow: 1px 3px 10px rgba(0,0,0,0.1);
     position: absolute;
     top: 0;
-    left: 0;
     width: 100%;
+    max-width: 500px;
     opacity: 0;
     transform: translateX(50px) rotate(3deg);
     pointer-events: none;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
 }
 
 .question-card.active {
@@ -263,9 +277,10 @@ button {
     line-height: 1.3;
     margin-bottom: 30px;
     color: #222;
+    word-break: keep-all;
 }
 
-/* 입력창 (밑줄만 있는 감성) */
+/* 입력창 */
 input[type="text"] {
     width: 100%;
     border: none;
@@ -291,11 +306,11 @@ input[type="text"]::placeholder {
 .choice-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .choice-item {
-    padding: 15px 20px;
+    padding: 12px 15px;
     background: #f9f9f9;
     border: 1px solid #eee;
     border-radius: 8px;
@@ -304,6 +319,8 @@ input[type="text"]::placeholder {
     transition: all 0.2s;
     display: flex;
     align-items: center;
+    word-break: keep-all;
+    line-height: 1.4;
 }
 
 .choice-item:hover {
@@ -319,14 +336,16 @@ input[type="text"]::placeholder {
 
 .navigation-buttons {
     width: 100%;
+    max-width: 500px;
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
+    margin: 20px auto 0;
+    padding: 0 10px;
 }
 
 .nav-btn {
     font-size: 2rem;
-    padding: 5px 20px;
+    padding: 5px 15px;
     color: #555;
     transition: color 0.3s;
 }
@@ -348,4 +367,72 @@ input[type="text"]::placeholder {
     margin-top: 30px;
     transform: rotate(15deg);
     font-family: 'Nanum Pen Script', cursive;
+}
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 600px) {
+    .scrapbook-card {
+        padding: 40px 20px;
+        width: 95%;
+    }
+
+    .title {
+        font-size: 3.2rem;
+    }
+
+    .quote {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .icon-row {
+        gap: 10px;
+        font-size: 0.85rem;
+    }
+
+    .handwriting-btn {
+        font-size: 2.2rem;
+        padding: 8px 30px;
+    }
+
+    .question-card {
+        padding: 30px 20px;
+    }
+
+    .q-label {
+        font-size: 1.8rem;
+    }
+    
+    input[type="text"] {
+        font-size: 1rem;
+    }
+
+    .choice-item {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+    }
+    
+    .question-container {
+        min-height: 380px;
+    }
+
+    .swatch-container {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .swatch {
+        width: 20px;
+        height: 35px;
+    }
+    
+    .nav-btn {
+        font-size: 1.6rem;
+    }
+    
+    .card-tape {
+        width: 80px;
+        height: 25px;
+        top: -10px;
+    }
 }
