@@ -40,7 +40,7 @@ passwordInput.addEventListener('keypress', (e) => {
 refreshBtn.addEventListener('click', fetchData);
 
 async function fetchData() {
-    tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">데이터를 불러오는 중입니다...</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="13" style="text-align: center; padding: 20px;">데이터를 불러오는 중입니다...</td></tr>';
     
     try {
         const q = query(collection(db, "applications"), orderBy("timestamp", "desc"));
@@ -50,9 +50,15 @@ async function fetchData() {
         totalCount.innerText = querySnapshot.size;
         
         if (querySnapshot.empty) {
-            tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">아직 접수된 신청서가 없습니다.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="13" style="text-align: center; padding: 20px;">아직 접수된 신청서가 없습니다.</td></tr>';
             return;
         }
+
+        const formatArray = (arr) => Array.isArray(arr) ? arr.join(', ') : (arr || '-');
+        const formatGrid = (obj) => {
+            if (!obj || typeof obj !== 'object') return '-';
+            return Object.entries(obj).map(([k, v]) => `${k}(${v.join(', ')})`).join('<br>');
+        };
 
         querySnapshot.forEach((doc) => {
             const data = doc.data();
@@ -73,14 +79,20 @@ async function fetchData() {
                 <td>${data.q2 || '-'}</td>
                 <td>${data.q3 || '-'}</td>
                 <td>${data.q4 || '-'}</td>
-                <td>${data.q5 || '-'}</td>
+                <td>${formatArray(data.q5)}</td>
                 <td>${data.q6 || '-'}</td>
+                <td>${formatArray(data.q7)}</td>
+                <td>${formatArray(data.q8)}</td>
+                <td>${data.q9 || '-'}</td>
+                <td>${formatArray(data.q10)}</td>
+                <td>${formatGrid(data.q11)}</td>
+                <td>${data.q12 || '-'}</td>
                 <td>${dateStr}</td>
             `;
             tableBody.appendChild(tr);
         });
     } catch (error) {
         console.error("Error fetching documents: ", error);
-        tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: red; padding: 20px;">데이터를 불러오는데 실패했습니다. (콘솔 확인)</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="13" style="text-align: center; color: red; padding: 20px;">데이터를 불러오는데 실패했습니다. (콘솔 확인)</td></tr>';
     }
 }

@@ -19,56 +19,19 @@ const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
     const questions = [
-        {
-            id: 'q1',
-            type: 'text',
-            label: '반가워요! 📝\n이름(또는 닉네임)을 알려주세요.',
-            placeholder: '예: 김해방'
-        },
-        {
-            id: 'q2',
-            type: 'text',
-            label: '연락드릴 수 있는 번호를 남겨주세요 📱',
-            placeholder: '예: 010-1234-5678'
-        },
-        {
-            id: 'q3',
-            type: 'choice',
-            label: '현재 당신의 옷장 상태는 어떤가요? 👗',
-            options: [
-                '🖤 99% 무채색 (블랙, 화이트, 그레이 인간)',
-                '🤔 컬러가 있긴 한데, 막상 입으려면 손이 안 가요',
-                '🌈 이미 컬러풀하지만, 더 새로운 스타일을 찾고 싶어요'
-            ]
-        },
-        {
-            id: 'q4',
-            type: 'choice',
-            label: '가장 도전해보고 싶은 패션이나 컬러는? 🎨',
-            options: [
-                '비비드하고 쨍한 원색 컬러',
-                '부드럽고 은은한 파스텔 톤',
-                '남들과 다른 유니크한 패턴이나 소재',
-                '포인트가 되는 액세서리 (모자, 안경, 가방 등)'
-            ]
-        },
-        {
-            id: 'q5',
-            type: 'choice',
-            label: '[무드해방일지]에서 가장 기대하는 활동은? ✨',
-            options: [
-                '컬러 해방템 및 데일리룩 꿀템 공유',
-                '나만의 스타일을 기록하고 이야기 나누기',
-                '핫플레이스(홍대/성수) 쇼룸 및 팝업 탐방',
-                '비슷한 취향을 가진 사람들과의 네트워킹'
-            ]
-        },
-        {
-            id: 'q6',
-            type: 'text',
-            label: '마지막으로 남기고 싶은 말이 있다면 적어주세요 :)',
-            placeholder: '기대평이나 궁금한 점 등 자유롭게!'
-        }
+        { id: 'q1', type: 'text', label: '1. 이름을 알려주세요!', placeholder: '단답형' },
+        { id: 'q2', type: 'text', label: '2. 나이 / 성별을 알려주세요.', placeholder: '예) 24 / 남' },
+        { id: 'q3', type: 'text', label: '3. 현재 하고 있는 일을 알려주세요.', placeholder: '예) 대학생 / 직장인 / 취준생 등' },
+        { id: 'q4', type: 'text', label: '4. 주로 활동하기 편한 지하철역을 알려주세요 🚇', placeholder: '예) 건대입구역, 신촌역' },
+        { id: 'q5', type: 'checkbox', label: '5. 평소 본인의 옷 스타일과 가장 가까운 것은 무엇인가요? 👕\n(복수 선택 가능)', options: ['무채색·미니멀', '캐주얼', '스트릿', '빈티지', '페미닌', '댄디', '스포티', '그때그때 달라요', '아직 내 스타일을 찾는 중!'] },
+        { id: 'q6', type: 'textarea', label: '6. 요즘 한 번쯤 도전해보고 싶은 스타일이 있나요? 🎨', placeholder: '예) 포인트 컬러 넣어보기 / 빈티지 도전 / 액세서리 활용 / 평소 안 입던 핏 등\n아직 없다면 편하게 없음이라고 적어주셔도 됩니다 :)' },
+        { id: 'q7', type: 'checkbox', label: '7. 무드해방일지에서 가장 해보고 싶은 활동을 골라주세요! 🛍️\n(복수 선택 가능)', options: ['성수·홍대 등 쇼룸 투어', '팝업스토어 탐방', '빈티지숍·동묘 탐방', '서로의 내돈내산 패션 꿀템 공유', '새로운 스타일 같이 도전하기', '데일리룩 사진 남기기', '쇼핑 번개', '플리마켓·벼룩시장 가기', '기타'] },
+        { id: 'q8', type: 'checkbox', label: '8. 옷을 고를 때 가장 중요하게 생각하는 건 무엇인가요? 👀\n(복수 선택 가능)', options: ['편안함', '나한테 잘 어울리는지', '색감', '핏·실루엣', '개성', '유행·트렌드', '가격', '그냥 마음에 들면 산다 😎'] },
+        { id: 'q9', type: 'textarea', label: '9. 사고 싶거나 입어보고 싶지만 아직 도전하지 못한 아이템이나 스타일이 있나요?', placeholder: '예) 빨간색 포인트 아이템 / 빈티지 자켓 / 액세서리 레이어드 / 평소와 완전히 다른 스타일 등' },
+        { id: 'q10', type: 'checkbox', label: '10. 무드해방일지에서 어떤 시간을 보내고 싶나요? 🤍\n(복수 선택 가능)', options: ['나만의 스타일 찾아보기', '새로운 스타일에 도전해보기', '패션 정보·꿀팁 공유하기', '예쁜 사진과 기록 남기기', '새로운 사람들과 친해지기', '서울의 새로운 공간 돌아다니기', '부담 없이 같이 쇼핑하기', '그냥 재미있게 놀기!'] },
+        { id: 'q11', type: 'grid', label: '11. 정기 모임에 참여 가능한 요일과 시간대를 모두 체크해주세요! 🗓️', rows: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'], cols: ['10~13시', '13~16시', '16~19시', '19시 이후'] },
+        { id: 'q12', type: 'textarea', label: '12. 마지막으로, 무드해방일지에 지원하게 된 이유를 편하게 들려주세요! 💬', placeholder: '패션을 얼마나 잘 아는지는 중요하지 않아요 :)\n지원하게 된 계기나 해보고 싶은 것, 기대하는 점 등을 자유롭게 적어주세요.' },
+        { id: 'q13', type: 'agreement', label: '지원 전 확인해주세요 ✓', options: ['월 1~2회 서울 및 서울 근교에서 활동하는 모임임을 확인했습니다.', '일정과 장소는 멤버들의 가능 시간을 고려해 조율되는 점을 확인했습니다.', '정치·종교·시민단체 활동, 다단계 및 포교 등 다른 목적의 참여는 제한되는 점을 확인했습니다.'] }
     ];
 
     const appContainer = document.getElementById('app-container');
@@ -76,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const formScreen = document.getElementById('form-screen');
     const completeScreen = document.getElementById('complete-screen');
     const questionContainer = document.querySelector('.question-container');
-    const currentStepText = document.getElementById('current-step');
     
     const startBtn = document.getElementById('start-btn');
     const prevBtn = document.getElementById('prev-btn');
@@ -85,14 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentQuestionIndex = 0;
     const answers = {};
 
-    // 1. 초기 렌더링 (모든 질문 카드를 미리 만들어둠)
     function initQuestions() {
         questions.forEach((q, index) => {
             const card = document.createElement('div');
             card.className = `question-card scrapbook-card ${index === 0 ? 'active' : ''}`;
             card.dataset.index = index;
             
-            // 상단 테이프
             const tape = document.createElement('div');
             tape.className = 'card-tape';
             card.appendChild(tape);
@@ -107,34 +67,79 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.type = 'text';
                 input.placeholder = q.placeholder;
                 input.id = `input-${q.id}`;
-                
                 input.addEventListener('keypress', (e) => {
                     if(e.key === 'Enter') handleNext();
                 });
-                
                 card.appendChild(input);
-            } else if (q.type === 'choice') {
+            } else if (q.type === 'textarea') {
+                const textarea = document.createElement('textarea');
+                textarea.placeholder = q.placeholder;
+                textarea.id = `input-${q.id}`;
+                textarea.className = 'custom-textarea';
+                card.appendChild(textarea);
+            } else if (q.type === 'checkbox' || q.type === 'agreement') {
                 const list = document.createElement('div');
                 list.className = 'choice-list';
                 
-                q.options.forEach((opt) => {
-                    const item = document.createElement('div');
-                    item.className = 'choice-item';
-                    item.innerText = opt;
+                q.options.forEach((opt, optIndex) => {
+                    const item = document.createElement('label');
+                    item.className = 'choice-item checkbox-item';
                     
-                    item.addEventListener('click', () => {
-                        // 다른 선택 해제
-                        const siblings = list.querySelectorAll('.choice-item');
-                        siblings.forEach(s => s.classList.remove('selected'));
-                        item.classList.add('selected');
-                        answers[q.id] = opt;
-                        
-                        setTimeout(() => handleNext(), 300);
-                    });
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = opt;
+                    cb.name = q.id;
+                    cb.id = `${q.id}-opt${optIndex}`;
                     
+                    const span = document.createElement('span');
+                    span.innerText = opt;
+                    
+                    item.appendChild(cb);
+                    item.appendChild(span);
                     list.appendChild(item);
                 });
                 card.appendChild(list);
+            } else if (q.type === 'grid') {
+                const gridContainer = document.createElement('div');
+                gridContainer.className = 'grid-container';
+                
+                const table = document.createElement('table');
+                table.className = 'grid-table';
+                
+                const thead = document.createElement('thead');
+                const trHead = document.createElement('tr');
+                trHead.appendChild(document.createElement('th')); 
+                q.cols.forEach(col => {
+                    const th = document.createElement('th');
+                    th.innerText = col;
+                    trHead.appendChild(th);
+                });
+                thead.appendChild(trHead);
+                table.appendChild(thead);
+                
+                const tbody = document.createElement('tbody');
+                q.rows.forEach((row, rIdx) => {
+                    const tr = document.createElement('tr');
+                    const tdRowLabel = document.createElement('td');
+                    tdRowLabel.innerText = row;
+                    tr.appendChild(tdRowLabel);
+                    
+                    q.cols.forEach((col, cIdx) => {
+                        const td = document.createElement('td');
+                        const cb = document.createElement('input');
+                        cb.type = 'checkbox';
+                        cb.name = `${q.id}-${rIdx}`;
+                        cb.value = col;
+                        cb.dataset.row = row;
+                        cb.dataset.col = col;
+                        td.appendChild(cb);
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+                gridContainer.appendChild(table);
+                card.appendChild(gridContainer);
             }
 
             questionContainer.appendChild(card);
@@ -143,57 +148,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initQuestions();
 
-    // 2. 폼 시작
     startBtn.addEventListener('click', () => {
         appContainer.classList.remove('monochrome-mode');
         appContainer.classList.add('color-mode'); 
-        
         welcomeScreen.classList.remove('active');
-        
         setTimeout(() => {
             formScreen.classList.add('active');
             updateUI();
         }, 500); 
     });
 
-    // 3. 네비게이션 및 카드 전환 로직
     function saveCurrentAnswer() {
         const q = questions[currentQuestionIndex];
-        if (q.type === 'text') {
+        if (q.type === 'text' || q.type === 'textarea') {
             const input = document.getElementById(`input-${q.id}`);
-            if (input) {
-                answers[q.id] = input.value.trim();
-            }
+            if (input) answers[q.id] = input.value.trim();
+        } else if (q.type === 'checkbox' || q.type === 'agreement') {
+            const checkboxes = document.querySelectorAll(`input[name="${q.id}"]:checked`);
+            answers[q.id] = Array.from(checkboxes).map(cb => cb.value);
+        } else if (q.type === 'grid') {
+            const checkedBoxes = document.querySelectorAll(`input[name^="${q.id}-"]:checked`);
+            const gridData = {};
+            checkedBoxes.forEach(cb => {
+                if (!gridData[cb.dataset.row]) gridData[cb.dataset.row] = [];
+                gridData[cb.dataset.row].push(cb.dataset.col);
+            });
+            answers[q.id] = gridData;
         }
     }
 
+    function validateCurrentStep() {
+        const q = questions[currentQuestionIndex];
+        if (q.type === 'agreement') {
+            const checkboxes = document.querySelectorAll(`input[name="${q.id}"]`);
+            const checked = document.querySelectorAll(`input[name="${q.id}"]:checked`);
+            if (checkboxes.length !== checked.length) {
+                alert('모든 필수 항목을 확인해주세요!');
+                return false;
+            }
+        }
+        return true;
+    }
+
     function updateUI() {
-        // 카드 상태 업데이트 (슬라이드 애니메이션)
         const cards = document.querySelectorAll('.question-card');
         cards.forEach((card, idx) => {
             card.classList.remove('active', 'prev');
             if (idx === currentQuestionIndex) {
                 card.classList.add('active');
-                
-                // 텍스트 인풋이면 포커스
-                const input = card.querySelector('input');
+                const input = card.querySelector('input[type="text"], textarea');
                 if (input) setTimeout(() => input.focus(), 300);
-                
             } else if (idx < currentQuestionIndex) {
                 card.classList.add('prev');
             }
         });
 
-        // 텍스트 업데이트
-        currentStepText.innerText = currentQuestionIndex + 1;
-        
-        // 버튼 상태
+        const progressContainer = document.querySelector('.progress-text');
+        if (progressContainer) {
+            progressContainer.innerHTML = `<span class="handwriting" style="font-size:2.5rem;">${currentQuestionIndex + 1}</span> / ${questions.length}`;
+        }
+
         prevBtn.style.display = currentQuestionIndex === 0 ? 'none' : 'block';
         nextBtn.innerText = currentQuestionIndex === questions.length - 1 ? '제출할게요! ✉️' : '다음 장';
     }
 
     function handleNext() {
         saveCurrentAnswer();
+        if (!validateCurrentStep()) return;
         
         if (currentQuestionIndex < questions.length - 1) {
             currentQuestionIndex++;
@@ -213,12 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function submitForm() {
         console.log('제출된 데이터:', answers);
-        
         try {
             nextBtn.innerText = '제출 중...';
             nextBtn.disabled = true;
             
-            // 파이어스토어에 데이터 저장 (applications 컬렉션)
             await addDoc(collection(db, "applications"), {
                 ...answers,
                 timestamp: new Date()
