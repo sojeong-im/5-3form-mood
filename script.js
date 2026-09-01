@@ -1,3 +1,22 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAXR0Z0nh2_81JRNOKP6HwElHIUgciK1wA",
+  authDomain: "beu-209eb.firebaseapp.com",
+  projectId: "beu-209eb",
+  storageBucket: "beu-209eb.firebasestorage.app",
+  messagingSenderId: "953956944176",
+  appId: "1:953956944176:web:7cbe6fcabbc8963b47e0f5",
+  measurementId: "G-537REF04BD"
+};
+
+// Firebase 초기화
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
 document.addEventListener('DOMContentLoaded', () => {
     const questions = [
         {
@@ -192,12 +211,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function submitForm() {
+    async function submitForm() {
         console.log('제출된 데이터:', answers);
-        formScreen.classList.remove('active');
-        setTimeout(() => {
-            completeScreen.classList.add('active');
-        }, 500);
+        
+        try {
+            nextBtn.innerText = '제출 중...';
+            nextBtn.disabled = true;
+            
+            // 파이어스토어에 데이터 저장 (applications 컬렉션)
+            await addDoc(collection(db, "applications"), {
+                ...answers,
+                timestamp: new Date()
+            });
+            
+            formScreen.classList.remove('active');
+            setTimeout(() => {
+                completeScreen.classList.add('active');
+            }, 500);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+            alert("제출 중 오류가 발생했습니다. 다시 시도해주세요.");
+            nextBtn.innerText = '제출할게요! ✉️';
+            nextBtn.disabled = false;
+        }
     }
 
     nextBtn.addEventListener('click', handleNext);
